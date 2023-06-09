@@ -17,3 +17,6 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" \
 
 psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" \
   -c "\COPY reviewer(name) FROM '/docker-entrypoint-initdb.d/reviewer.txt';"
+
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" \
+  -c "\COPY instance(category, data) FROM '/docker-entrypoint-initdb.d/instance.tsv' DELIMITER E'\t' QUOTE E'\b' CSV;"
