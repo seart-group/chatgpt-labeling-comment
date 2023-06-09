@@ -1,4 +1,14 @@
-<!--
-    TODO: Edit this file to control the rendering of data for each individual instance
--->
-<pre class="border rounded"><code class="language-json" style="white-space: pre!important; height: 550px!important;"><%= JSON.stringify(data, null, 2) || " " %></code></pre>
+<div class="position-relative">
+    <% if (data.html_url) { %>
+        <div class="hljs-controls position-absolute z-1 d-flex align-items-center border">
+            <span class="text-secondary py-1 ps-2">"<%- data.ngram.join(" ") %>"</span>
+            <a target="_blank"
+               href="<%- data.html_url %>"
+               class="link-secondary py-1 px-2"
+            >
+                <i class="bi bi-box-arrow-up-right"></i>
+            </a>
+        </div>
+    <% } %>
+    <pre class="border rounded position-relative z-0"><code class="language-json" style="white-space: pre!important; height: 550px!important;"><%= JSON.stringify(data, null, 2) || " " %></code></pre>
+</div>

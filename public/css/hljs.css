@@ -7,6 +7,13 @@ pre code.hljs mark {
     background-color: yellow;
 }
 
+.hljs-controls {
+    top: 0!important;
+    right: 15px!important;
+    background-color: rgb(243, 243, 243)!important;
+    border-bottom-left-radius: .25rem!important;
+}
+
 .hljs-ln-numbers {
     user-select: none;
     text-align: center;
