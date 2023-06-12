@@ -2,11 +2,6 @@
     font-family: var(--bs-font-monospace)!important;
 }
 
-pre code.hljs mark {
-    padding: 0.2rem;
-    background-color: yellow;
-}
-
 .hljs-controls {
     top: 0!important;
     right: 15px!important;
