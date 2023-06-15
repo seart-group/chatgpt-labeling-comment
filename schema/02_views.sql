@@ -41,7 +41,7 @@ SELECT bucket.category
 FROM instance_review_bucket bucket
 WHERE bucket.count > 366;
 
-CREATE OR REPLACE VIEW "instance_review_progress" AS
+CREATE OR REPLACE VIEW "reviewer_review_progress" AS
 SELECT
     reviewer.id AS id,
     reviewer.name AS name,
@@ -51,6 +51,29 @@ LEFT OUTER JOIN instance_review review
     ON reviewer.id = review.reviewer_id
 GROUP BY reviewer.id
 ORDER BY reviewer.id;
+
+CREATE OR REPLACE VIEW "reviewer_discard_progress" AS
+SELECT
+    reviewer.id AS id,
+    reviewer.name AS name,
+    COUNT(discard.reviewer_id)::INTEGER AS progress
+FROM reviewer
+LEFT OUTER JOIN instance_discard discard
+    ON reviewer.id = discard.reviewer_id
+GROUP BY reviewer.id
+ORDER BY reviewer.id;
+
+CREATE OR REPLACE VIEW "reviewer_progress" AS
+SELECT
+    reviewer.id AS id,
+    reviewer.name AS name,
+    review_progress.progress AS review_progress,
+    discard_progress.progress AS discard_progress
+FROM reviewer
+INNER JOIN reviewer_review_progress review_progress
+    ON reviewer.id = review_progress.id
+INNER JOIN reviewer_discard_progress discard_progress
+    ON reviewer.id = discard_progress.id;
 
 CREATE OR REPLACE VIEW "instance_review_conflict_label" AS
 SELECT DISTINCT ON (instance.id)
