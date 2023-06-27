@@ -3,9 +3,9 @@ name: "labeling-comments"
 
 services:
 
-  labeling-database:
-    container_name: labeling-database
-    hostname: labeling-database
+  labeling-comments-database:
+    container_name: labeling-comments-database
+    hostname: labeling-comments-database
     image: labeling/database:latest
     build:
       context: ../
@@ -33,22 +33,22 @@ services:
       timeout: 5s
       retries: 5
 
-  labeling-backup:
+  labeling-comments-backup:
     # TODO: Backup service is disabled by default.
     #       To re-enable it, you have to define a `docker-compose.override.yml`,
     #       such that it contains the `labeling-backup` service definition,
     #       with `restart` set to `always`, and `entrypoint` to `/init`.
     #       Don't forget to specify the override file when deploying!
-    container_name: labeling-backup
-    hostname: labeling-backup
+    container_name: labeling-comments-backup
+    hostname: labeling-comments-backup
     image: tiredofit/db-backup:latest
     volumes:
       - /tmp/labeling/backup:/backup
     networks: [ default ]
-    links: [ labeling-database ]
+    links: [ labeling-comments-database ]
     environment:
       DB_TYPE: pgsql
-      DB_HOST: labeling-database
+      DB_HOST: labeling-comments-database
       DB_NAME: ${DATABASE_NAME}
       DB_USER: ${DATABASE_USER}
       DB_PASS: ${DATABASE_PASS}
@@ -60,27 +60,27 @@ services:
       EXTRA_OPTS: --data-only
       CONTAINER_ENABLE_MONITORING: FALSE
     depends_on:
-      labeling-database:
+      labeling-comments-database:
         condition: service_healthy
     restart: no
     entrypoint: "true"
 
-  labeling-server:
-    container_name: labeling-server
-    hostname: labeling-server
+  labeling-comments-server:
+    container_name: labeling-comments-server
+    hostname: labeling-comments-server
     image: labeling/server:latest
     build:
       context: ../
       dockerfile: deployment/server/Dockerfile
     networks: [ default ]
     environment:
-      DATABASE_HOST: labeling-database
+      DATABASE_HOST: labeling-comments-database
       DATABASE_PORT: 5432
       DATABASE_NAME: ${DATABASE_NAME}
       DATABASE_USER: ${DATABASE_USER}
       DATABASE_PASS: ${DATABASE_PASS}
     depends_on:
-      labeling-database:
+      labeling-comments-database:
         condition: service_healthy
     deploy:
       restart_policy:
@@ -91,8 +91,8 @@ services:
 
 volumes:
   data:
-    name: labeling-data
+    name: labeling-comments-data
 
 networks:
   default:
-    name: labeling-network
+    name: labeling-comments-network
