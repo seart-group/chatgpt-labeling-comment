@@ -6,7 +6,7 @@ services:
   labeling-comments-database:
     container_name: labeling-comments-database
     hostname: labeling-comments-database
-    image: labeling/database:latest
+    image: labeling/database:comments
     build:
       context: ../
       dockerfile: deployment/database/Dockerfile
@@ -68,7 +68,7 @@ services:
   labeling-comments-server:
     container_name: labeling-comments-server
     hostname: labeling-comments-server
-    image: labeling/server:latest
+    image: labeling/server:comments
     build:
       context: ../
       dockerfile: deployment/server/Dockerfile
